@@ -1,14 +1,10 @@
 // --------------------------------------------
 // Dependencies
 // --------------------------------------------
-var autoprefixer = require('gulp-autoprefixer'),
-    concat = require('gulp-concat'),
-    del = require('del'),
+var concat = require('gulp-concat'),
     gulp = require('gulp'),
-    minifycss = require('gulp-minify-css'),
     plumber = require('gulp-plumber'),
     sass = require('gulp-sass'),
-    sourcemaps = require('gulp-sourcemaps'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify'),
     images = require('gulp-imagemin'),
@@ -22,7 +18,9 @@ var styleSrc = 'source/sass/**/*.scss',
     htmlDest = 'build/',
     vendorSrc = 'source/js/vendors/',
     vendorDest = 'build/assets/js/',
-    scriptSrc = 'source/js/*.js',
+		organiseSrc = 'source/json/*.json',
+		organiseDest = 'build/assets/json',
+    scriptSrc = 'source/js/*.js/',
     scriptDest = 'build/assets/js/';
 
 
@@ -61,6 +59,12 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest('build/assets/js'));
 });
 
+gulp.task('organise', function() {
+		gulp.src('source/json/*.json')
+				.pipe(plumber())
+				.pipe(gulp.dest('build/assets/json'));
+});
+
 //Concat and Compress Vendor .js files
 gulp.task('vendors', function() {
     gulp.src(
@@ -90,10 +94,11 @@ gulp.task('watch', function(){
     gulp.watch(styleSrc,['process_sass']);
     gulp.watch(scriptSrc,['scripts']);
     gulp.watch(vendorSrc,['vendors']);
-    gulp.watch(['build/*.html', 'build/assets/css/*.css', 'build/assets/js/*.js', 'build/assets/js/vendors/*.js']).on('change', browserSync.reload);
+		gulp.watch(organiseSrc,['organise']);
+    gulp.watch(['build/*.html', 'build/assets/css/*.css', 'build/assets/js/*.js', 'build/assets/json/*.json', 'build/assets/js/vendors/*.js']).on('change', browserSync.reload);
 
 });
 
 
 // use default task to launch Browsersync and watch JS files
-gulp.task('default', [ 'process_sass', 'scripts', 'vendors', 'watch'], function () {});
+gulp.task('default', [ 'process_sass', 'scripts', 'organise', 'vendors', 'watch'], function () {});

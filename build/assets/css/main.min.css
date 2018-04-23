@@ -291,6 +291,22 @@ hr {
   margin: 10px 0 30px;
   height: 0; }
 
+h1 {
+  font-size: 50px;
+  color: white;
+  position: absolute;
+  text-align: center;
+  padding-left: 130px;
+  top: 10%;
+  display: block;
+  text-transform: capitalize; }
+
+#particles-js {
+  width: 100%;
+  background-size: cover;
+  background: #222;
+  max-height: 50vh; }
+
 body {
   height: 100%;
   display: flex;
