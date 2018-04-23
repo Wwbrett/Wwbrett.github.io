@@ -8,8 +8,11 @@ var concat = require('gulp-concat'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify'),
     images = require('gulp-imagemin'),
+		swPrecache = require('sw-precache'),
+		path = require('path'),
     browserSync = require('browser-sync').create();
 
+var dest = './source';
 
 // paths
 var styleSrc = 'source/sass/**/*.scss',
@@ -29,6 +32,11 @@ var styleSrc = 'source/sass/**/*.scss',
 // Stand Alone Tasks
 // --------------------------------------------
 
+gulp.task('generate-service-worker', function(callback) {
+	swPrecache.write(path.join(dest, 'servie-worker.js'), {
+		staticFileGlobs: [ dest + '/**/*.{js,html,json,css}'], stripPrefix: dest
+	}, callback);
+});
 
 // Compiles all SASS files
 gulp.task('process_sass', function() {
